@@ -40,6 +40,11 @@ w2_motor_id = mj.mj_name2id(model, mj.mjtObj.mjOBJ_ACTUATOR, "w2_motor")
 w3_motor_id = mj.mj_name2id(model, mj.mjtObj.mjOBJ_ACTUATOR, "w3_motor")
 w4_motor_id = mj.mj_name2id(model, mj.mjtObj.mjOBJ_ACTUATOR, "w4_motor")
 
+body_x_id = mj.mj_name2id(model, mj.mjtObj.mjOBJ_ACTUATOR, "bd_motor")
+body_y_id = mj.mj_name2id(model, mj.mjtObj.mjOBJ_ACTUATOR, "bf_motor")
+body_r_id = mj.mj_name2id(model, mj.mjtObj.mjOBJ_ACTUATOR, "br_motor")
+
+
 # Debug: Print motor IDs to verify they're found
 print(f"Motor IDs: w1={w1_motor_id}, w2={w2_motor_id}, w3={w3_motor_id}, w4={w4_motor_id}")
 if w1_motor_id == -1 or w2_motor_id == -1 or w3_motor_id == -1 or w4_motor_id == -1:
@@ -106,6 +111,11 @@ while not glfw.window_should_close(window):
             data.ctrl[w3_motor_id] = state.w3_speed
         if w4_motor_id != -1:
             data.ctrl[w4_motor_id] = state.w4_speed
+            
+        if body_x_id != -1:
+            data.ctrl[body_x_id] = state.body_x_speed
+        if body_y_id != -1:
+            data.ctrl[body_y_id] = state.body_y_speed
         # ============================================
 
         # ============================================
@@ -129,6 +139,17 @@ while not glfw.window_should_close(window):
         #
         # Note: The base_link has a freejoint, so you'll be setting angular velocity
         # in the base_link's body frame or world frame depending on your implementation
+        
+        # Reset angular velocity control after applying
+        
+        if state.angular_vel_control == AngularVelocityControl.LEFT:
+            # Apply left rotation angular velocity
+            data.qvel[qpos_addr + 3] = 0.0625  # Set some angular velocity around x-axis
+        elif state.angular_vel_control == AngularVelocityControl.RIGHT:
+            # Apply right rotation angular velocity
+            data.qvel[qpos_addr + 3] = -0.0625  # Set some angular velocity around x-axis
+        
+        
         # ============================================
 
         # ============================================

@@ -6,7 +6,6 @@ from enums import AngularVelocityControl
 from enums import JointControl
 
 
-
 def keyboard_callback(window, key, scancode, action, mods):
     if action == glfw.PRESS or action == glfw.REPEAT:  # Handle key press or hold
 
@@ -14,35 +13,55 @@ def keyboard_callback(window, key, scancode, action, mods):
 
         # Forwards and Backwards Control - increment wheel speeds by 0.1
         # Forward: w1 positive, w3 negative
-        if key == glfw.KEY_W: 
+        if key == glfw.KEY_W:
             state.w1_speed += 0.1
             state.w3_speed -= 0.1
             # Clamp to [-1, 1] range
             state.w1_speed = max(-1.0, min(1.0, state.w1_speed))
             state.w3_speed = max(-1.0, min(1.0, state.w3_speed))
+            # print(f"Forward: w1={state.w1_speed:.2f}, w3={state.w3_speed:.2f}")
+
+            state.body_x_speed += 10000
+            state.body_x_speed = max(-150000.00, min(150000, state.body_x_speed))
+
+            print(f"Forward: body_x={state.body_x_speed:.2f}")
+            
+
         # Backward: w1 negative, w3 positive
-        elif key == glfw.KEY_S: 
+        if key == glfw.KEY_S:
             state.w1_speed -= 0.1
             state.w3_speed += 0.1
             # Clamp to [-1, 1] range
             state.w1_speed = max(-1.0, min(1.0, state.w1_speed))
             state.w3_speed = max(-1.0, min(1.0, state.w3_speed))
+            print(f"Backward: w1={state.w1_speed:.2f}, w3={state.w3_speed:.2f}")
+            
+            state.body_x_speed -= 10000
+            state.body_x_speed = max(-150000.00, min(150000, state.body_x_speed))
 
-        #Left and Right Control - increment wheel speeds by 0.1
+        # Left and Right Control - increment wheel speeds by 0.1
         # Left: w2 positive, w3 negative
-        if key == glfw.KEY_A: 
+        if key == glfw.KEY_A:
             state.w2_speed += 0.1
             state.w3_speed -= 0.1
             # Clamp to [-1, 1] range
             state.w2_speed = max(-1.0, min(1.0, state.w2_speed))
             state.w3_speed = max(-1.0, min(1.0, state.w3_speed))
+            print(f"Left: w2={state.w2_speed:.2f}, w3={state.w3_speed:.2f}")
+            
+            state.body_y_speed += 10000
+            state.body_y_speed = max(-150000.00, min(150000, state.body_y_speed))
         # Right: w2 negative, w3 positive
-        elif key == glfw.KEY_D: 
+        if key == glfw.KEY_D:
             state.w2_speed -= 0.1
             state.w3_speed += 0.1
             # Clamp to [-1, 1] range
             state.w2_speed = max(-1.0, min(1.0, state.w2_speed))
             state.w3_speed = max(-1.0, min(1.0, state.w3_speed))
+            print(f"Right: w2={state.w2_speed:.2f}, w3={state.w3_speed:.2f}")
+            
+            state.body_y_speed -= 10000
+            state.body_y_speed = max(-150000.00, min(150000, state.body_y_speed))
 
         # Neutral Key (Note: X is now used for a2 joint decrease, consider using a different key for neutral)
         # TODO: Reassign neutral key if needed, or remove this if X should only control a2
@@ -51,7 +70,7 @@ def keyboard_callback(window, key, scancode, action, mods):
         #     state.rl_control = BotControl.NEUTRAL
 
         # Angular Velocity Control (Left/Right arrows for base rotation)
-        if key == glfw.KEY_LEFT: 
+        if key == glfw.KEY_LEFT:
             state.angular_vel_control = AngularVelocityControl.LEFT
         elif key == glfw.KEY_RIGHT:
             state.angular_vel_control = AngularVelocityControl.RIGHT
@@ -81,13 +100,18 @@ def keyboard_callback(window, key, scancode, action, mods):
 
         # Camera control (Note: Left/Right arrows are now used for angular velocity)
         # Only Up/Down arrows and other keys control camera now
-        if key == glfw.KEY_UP: state.cam_control = CameraControl.UP
-        elif key == glfw.KEY_DOWN: state.cam_control = CameraControl.DOWN
-        elif key == glfw.KEY_PAGE_UP: state.cam_control = CameraControl.ZOOM_IN
-        elif key == glfw.KEY_PAGE_DOWN: state.cam_control = CameraControl.ZOOM_OUT
-        elif key == glfw.KEY_HOME: state.cam_control = CameraControl.RESET_CAMERA
-        elif key == glfw.KEY_DELETE: state.cam_control = CameraControl.HOME
-
+        if key == glfw.KEY_UP:
+            state.cam_control = CameraControl.UP
+        elif key == glfw.KEY_DOWN:
+            state.cam_control = CameraControl.DOWN
+        elif key == glfw.KEY_PAGE_UP:
+            state.cam_control = CameraControl.ZOOM_IN
+        elif key == glfw.KEY_PAGE_DOWN:
+            state.cam_control = CameraControl.ZOOM_OUT
+        elif key == glfw.KEY_HOME:
+            state.cam_control = CameraControl.RESET_CAMERA
+        elif key == glfw.KEY_DELETE:
+            state.cam_control = CameraControl.HOME
 
     elif action == glfw.RELEASE:
 
@@ -95,17 +119,25 @@ def keyboard_callback(window, key, scancode, action, mods):
         # (Wheel speeds are only changed by pressing keys, not by releasing them)
 
         # Reset angular velocity control
-        if key == glfw.KEY_LEFT: state.angular_vel_control = AngularVelocityControl.NONE
-        elif key == glfw.KEY_RIGHT: state.angular_vel_control = AngularVelocityControl.NONE
+        if key == glfw.KEY_LEFT:
+            state.angular_vel_control = AngularVelocityControl.NONE
+        elif key == glfw.KEY_RIGHT:
+            state.angular_vel_control = AngularVelocityControl.NONE
 
         # Joint controls are one-time increments, no need to reset on release
 
         # Reset camera back to neutral after letting go of a key
-        if key == glfw.KEY_UP: state.cam_control = CameraControl.NONE
-        elif key == glfw.KEY_DOWN: state.cam_control = CameraControl.NONE
-        elif key == glfw.KEY_PAGE_UP: state.cam_control = CameraControl.NONE
-        elif key == glfw.KEY_PAGE_DOWN: state.cam_control = CameraControl.NONE
-        elif key == glfw.KEY_HOME: state.cam_control = CameraControl.NONE
-        elif key == glfw.KEY_DELETE: state.cam_control = CameraControl.NONE
+        if key == glfw.KEY_UP:
+            state.cam_control = CameraControl.NONE
+        elif key == glfw.KEY_DOWN:
+            state.cam_control = CameraControl.NONE
+        elif key == glfw.KEY_PAGE_UP:
+            state.cam_control = CameraControl.NONE
+        elif key == glfw.KEY_PAGE_DOWN:
+            state.cam_control = CameraControl.NONE
+        elif key == glfw.KEY_HOME:
+            state.cam_control = CameraControl.NONE
+        elif key == glfw.KEY_DELETE:
+            state.cam_control = CameraControl.NONE
 
     return None

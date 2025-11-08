@@ -66,6 +66,9 @@
     <position name="a1_motor" joint="a1" kp="5" kv="1" ctrlrange="-3.14 3.14"/>
     <position name="a2_motor" joint="a2" kp="2" kv="1" ctrlrange="-3.14 3.14"/>
     <position name="h_motor" joint="h" kp="5" kv="1" ctrlrange="-3.14 3.14"/>
+
+  
+        
     <!-- <position name="w1_motor" joint="w1" kp="5" kv="1" ctrlrange="-3.14 3.14"/>
     <position name="w2_motor" joint="w2" kp="5" kv="1" ctrlrange="-3.14 3.14"/>
     <position name="w3_motor" joint="w3" kp="5" kv="1" ctrlrange="-3.14 3.14"/>

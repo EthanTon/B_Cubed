@@ -53,7 +53,7 @@
           <inertial pos="4.0307e-08 1.6883e-08 0.12424" quat="0.999977 0 0 0.0067613"
             mass="0.072732" diaginertia="0.00032679 0.00032678 3.6454e-06" />
           <joint name="a2" pos="0 0 0" axis="1 0 0" />
-          <geom type="mesh" rgba="0.79216 0.81961 0.93333 1" mesh="a2" />
+          <geom type="mesh" rgba="0.79216 0.81961 0.93333 1" mesh="a2" friction = "1 1 1" condim = "6"/>
           <body name="h" pos="0 0 0.34" quat="0.51312 0.486525 0.513122 -0.486527">
             <inertial pos="0.0625 0 0" mass="0.5" diaginertia="0.0083776 0.0054323 0.0054323" />
             <joint name="h" pos="0 0 0" axis="-1 0 0" />

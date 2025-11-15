@@ -25,7 +25,6 @@ def keyboard_callback(window, key, scancode, action, mods):
             state.body_x_speed = max(-150000.00, min(150000, state.body_x_speed))
 
             print(f"Forward: body_x={state.body_x_speed:.2f}")
-            
 
         # Backward: w1 negative, w3 positive
         if key == glfw.KEY_S:
@@ -35,7 +34,7 @@ def keyboard_callback(window, key, scancode, action, mods):
             # state.w1_speed = max(-1.0, min(1.0, state.w1_speed))
             # state.w3_speed = max(-1.0, min(1.0, state.w3_speed))
             # print(f"Backward: w1={state.w1_speed:.2f}, w3={state.w3_speed:.2f}")
-            
+
             state.body_x_speed -= 10000
             state.body_x_speed = max(-150000.00, min(150000, state.body_x_speed))
             print(f"Backward: body_x={state.body_x_speed:.2f}")
@@ -49,7 +48,7 @@ def keyboard_callback(window, key, scancode, action, mods):
             # state.w2_speed = max(-1.0, min(1.0, state.w2_speed))
             # state.w3_speed = max(-1.0, min(1.0, state.w3_speed))
             # print(f"Left: w2={state.w2_speed:.2f}, w3={state.w3_speed:.2f}")
-            
+
             state.body_y_speed += 10000
             state.body_y_speed = max(-150000.00, min(150000, state.body_y_speed))
             print(f"Left: body_y={state.body_y_speed:.2f}")
@@ -61,7 +60,7 @@ def keyboard_callback(window, key, scancode, action, mods):
             # state.w2_speed = max(-1.0, min(1.0, state.w2_speed))
             # state.w3_speed = max(-1.0, min(1.0, state.w3_speed))
             # print(f"Right: w2={state.w2_speed:.2f}, w3={state.w3_speed:.2f}")
-            
+
             state.body_y_speed -= 10000
             state.body_y_speed = max(-150000.00, min(150000, state.body_y_speed))
             print(f"Right: body_y={state.body_y_speed:.2f}")
@@ -74,9 +73,15 @@ def keyboard_callback(window, key, scancode, action, mods):
 
         # Angular Velocity Control (Left/Right arrows for base rotation)
         if key == glfw.KEY_Q:
-            state.angular_vel_control = AngularVelocityControl.LEFT
+            # state.angular_vel_control = AngularVelocityControl.LEFT
+            state.body_r_speed += 10000
+            state.body_r_speed = max(-150000.00, min(150000, state.body_r_speed))
+            print(f"Rotate Left: body_r={state.body_r_speed:.2f}")
         if key == glfw.KEY_E:
-            state.angular_vel_control = AngularVelocityControl.RIGHT
+            # state.angular_vel_control = AngularVelocityControl.RIGHT
+            state.body_r_speed -= 10000
+            state.body_r_speed = max(-150000.00, min(150000, state.body_r_speed))
+            print(f"Rotate Right: body_r={state.body_r_speed:.2f}")
 
         # Joint Position Control (one-time increment per key press)
         # i, j keys: a1 joint increase and decrease (0.2 increment)

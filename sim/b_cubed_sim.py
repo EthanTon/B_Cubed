@@ -123,6 +123,9 @@ while not glfw.window_should_close(window):
             data.ctrl[body_x_id] = state.body_x_speed
         if body_y_id != -1:
             data.ctrl[body_y_id] = state.body_y_speed
+        if body_r_id != -1:
+            data.ctrl[body_r_id] = state.body_r_speed    
+            
         # ============================================
 
         # ============================================
@@ -149,19 +152,16 @@ while not glfw.window_should_close(window):
 
         # Reset angular velocity control after applying
 
-        if state.angular_vel_control == AngularVelocityControl.LEFT:
-            # Apply left rotation angular velocity
-            data.qvel[qpos_addr + 0 : qpos_addr + 2] = 0.0
-            data.qvel[qpos_addr + 3] = (
-                0.05  # Set some angular velocity around x-axis
-            )
+        # if state.angular_vel_control == AngularVelocityControl.LEFT:
+        #     # Apply left rotation angular velocity
+        #     # data.qvel[qpos_addr + 0 : qpos_addr + 2] = 0.0
+        #     # data.qvel[qpos_addr + 3] = 0.05  # Set some angular velocity around x-axis
 
-        if state.angular_vel_control == AngularVelocityControl.RIGHT:
-            # Apply right rotation angular velocity
-            data.qvel[qpos_addr + 0 : qpos_addr + 2] = 0.0
-            data.qvel[qpos_addr + 3] = (
-                -0.05
-            )  # Set some angular velocity around x-axis
+        # if state.angular_vel_control == AngularVelocityControl.RIGHT:
+        #     # Apply right rotation angular velocity
+        #     # data.qvel[qpos_addr + 0 : qpos_addr + 2] = 0.0
+        #     # data.qvel[qpos_addr + 3] = -0.05  # Set some angular velocity around x-axis
+            
 
         # ============================================
 
